@@ -2,6 +2,7 @@
 
 import requests
 from bot.bot import Bot
+from bridge.reply import Reply, ReplyType
 
 
 # Baidu Unit对话接口 (可用, 但能力较弱)
@@ -14,11 +15,12 @@ class BaiduUnitBot(Bot):
         headers = {'content-type': 'application/x-www-form-urlencoded'}
         response = requests.post(url, data=post_data.encode(), headers=headers)
         if response:
-            return response.json()['result']['context']['SYS_PRESUMED_HIST'][1]
+            reply = Reply(ReplyType.TEXT, response.json()['result']['context']['SYS_PRESUMED_HIST'][1])
+            return reply
 
     def get_token(self):
-        access_key = 'wdNwpvzh4fBr8xzTuPePOWhU'
-        secret_key = 'EUtLXyrogfTQV8nnjncnqNEfeyoHDUqS'
+        access_key = 'YOUR_ACCESS_KEY'
+        secret_key = 'YOUR_SECRET_KEY'
         host = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=' + access_key + '&client_secret=' + secret_key
         response = requests.get(host)
         if response:
